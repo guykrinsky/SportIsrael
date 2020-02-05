@@ -16,6 +16,15 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity
+            android:name=".ProfileActivity"
+            android:label="@string/profile_page_title" />
+        <activity
+            android:name=".GroupsActivity"
+            android:label="@string/groups_page_title" />
+        <activity
+            android:name=".MapActivity"
+            android:label="@string/map_page_title" />
     </application>
 
 </manifest>
