@@ -5,4 +5,8 @@
     <color name="colorAccent">#D81B60</color>
     <color name="white">#ffffff</color>
     <color name="black">#000000</color>
+    <color name="profile_blue">#0095e6</color>
+    <color name="profile_line">#a45200</color>
+    <color name="orange_background">#f2bd5b</color>
+
 </resources>
