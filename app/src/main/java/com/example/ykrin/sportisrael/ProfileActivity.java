@@ -8,13 +8,15 @@ import android.support.design.widget.BottomNavigationView;
 import android.support.v4.graphics.drawable.RoundedBitmapDrawable;
 import android.support.v4.graphics.drawable.RoundedBitmapDrawableFactory;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import org.w3c.dom.Text;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 
 public class ProfileActivity extends AppCompatActivity implements View.OnClickListener
 {
@@ -25,20 +27,27 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
     ImageView profile_icon;
     Button friend_request_button;
     Button invite_button;
+    Button logout;
     TextView username;
     TextView profile_description;
+    FirebaseUser user;
+    String name;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_profile);
-
         menu_bar_view = (BottomNavigationView)findViewById(R.id.navigation_bar);
         profile_icon =(ImageView) findViewById(R.id.ivProfile);
         friend_request_button = (Button) findViewById(R.id.btnFriendRequest);
         invite_button = (Button) findViewById(R.id.btnMessage);
         username = (TextView)findViewById(R.id.tvName);
         profile_description = (TextView)findViewById(R.id.tvDescription);
+        logout = (Button) findViewById(R.id.logout_button);
+
+        user = FirebaseAuth.getInstance().getCurrentUser();
+
 
         Bitmap bitmap = BitmapFactory.decodeResource(getResources(), R.drawable.bibi_sport_israel);
 
@@ -54,13 +63,27 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
 
         invite_button.setOnClickListener(this);
         friend_request_button.setOnClickListener(this);
+        logout.setOnClickListener(this);
 
         updateUserDetails();
     }
 
     public void updateUserDetails()
     {
-        username.setText(BIBI_USERNAME);
+        if (user == null)
+        {
+            Toast.makeText(ProfileActivity.this, "User null", Toast.LENGTH_LONG).show();
+            username.setText(BIBI_USERNAME);
+        }
+        else
+        {
+            name = user.getDisplayName();
+            String email = user.getEmail();
+            Log.d("sportIsrael", "User name in profile: " + name);
+            Log.d("sportIsrael", "User email in profile: " + email);
+            username.setText(name);
+        }
+
         profile_description.setText(BIBI_DESCRIPTION);
     }
     @Override
@@ -70,11 +93,12 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
         {
             if (friend_request_button.getText().toString().equalsIgnoreCase("friend request"))
             {
+                updateUserDetails();
                 friend_request_button.setText("Send");
             }
             else
             {
-                    friend_request_button.setText("friend request");
+                friend_request_button.setText("friend request");
             }
         }
         if (button_pressed == invite_button)
@@ -84,6 +108,12 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
             Toast.makeText(this, "select a court to play on", Toast.LENGTH_LONG).show();
             Intent intent_map = new Intent(this, MapActivity.class);
             this.startActivity(intent_map);
+        }
+        if (button_pressed == logout)
+        {
+            FirebaseAuth.getInstance().signOut();
+            Intent intent_login = new Intent(this,LoginActivity.class);
+            this.startActivity(intent_login);
         }
 
     }
