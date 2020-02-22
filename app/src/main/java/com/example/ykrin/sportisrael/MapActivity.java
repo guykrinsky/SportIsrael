@@ -300,6 +300,7 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
     {
         String new_court_title = "";
         String new_court_disception = "";
+        LatLng curret_place = new LatLng(mLastKnownLocation.getLatitude(),mLastKnownLocation.getLongitude());
         if (court_description.getText() != null && court_title.getText() != null) {
             new_court_disception = court_description.getText().toString();
             new_court_title = court_title.getText().toString();
@@ -310,7 +311,7 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
         }
         Marker new_mark = mMap.addMarker(new MarkerOptions()
             .title(new_court_title)
-            .position(DORON)
+            .position(curret_place)
             .snippet(new_court_disception)
             .draggable(true)
             .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN)));
@@ -343,7 +344,7 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
     @Override
     public void onMarkerDrag(Marker marker)
     {
-        Toast.makeText(this,"when you leave the marker you cant change his place", Toast.LENGTH_SHORT).show();
+       // Toast.makeText(this,"when you leave the marker you cant change his place", Toast.LENGTH_SHORT).show();
     }
 
     @Override
