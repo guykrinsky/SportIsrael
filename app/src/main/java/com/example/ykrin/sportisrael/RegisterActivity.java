@@ -49,13 +49,6 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
         progress_bar = findViewById(R.id.progressBar);
 
         f_auth = FirebaseAuth.getInstance();
-        /*
-        if (f_auth.getCurrentUser() != null)
-        {
-            startActivity(new Intent(getApplicationContext(),MainActivity.class));
-            finish();
-        }
-        */
 
         register_button.setOnClickListener(this);
         m_login_button.setOnClickListener(this);

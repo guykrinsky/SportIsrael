@@ -51,22 +51,7 @@ public class CourtInformationActivity extends AppCompatActivity implements View.
         back_to_the_map = findViewById(R.id.back_to_map_button);
 
         mDB = FirebaseFirestore.getInstance();
-//        String court_title = "Doron";
-//        DocumentReference cd = mDB.collection("courts").document(court_title);
-//        Log.d(TAG, "court ref: " + cd.toString());
-//        cd.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
-//            @Override
-//            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-//                Log.d(TAG, "Get doc is completed.");
-//                if (task.isSuccessful()) {
-//                    DocumentSnapshot document = task.getResult();
-//                    Log.d(TAG, "document data: " + document.getData());
-//                } else {
-//                    Log.d(TAG, "doc get failed: ", task.getException());
-//                }
-//                Log.d(TAG, "Finished isSuccessfull.");
-//            }
-//        });
+
         // Extract marker name (== court name), from intent.
         Bundle extras = getIntent().getExtras();
         final String court_title = extras.getString("court_title");
