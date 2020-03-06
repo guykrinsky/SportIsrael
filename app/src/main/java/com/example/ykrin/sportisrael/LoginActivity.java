@@ -18,6 +18,7 @@ import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 
 public class LoginActivity extends AppCompatActivity implements View.OnClickListener {
+    private static final String TAG = "sportIsrael";
     EditText m_email;
     EditText m_passowrd;
     Button m_logiin_button;

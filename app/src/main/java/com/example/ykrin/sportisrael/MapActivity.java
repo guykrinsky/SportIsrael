@@ -1,8 +1,10 @@
 package com.example.ykrin.sportisrael;
 
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.location.Location;
 import android.os.Bundle;
+import android.os.SystemClock;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
 import android.support.v4.app.ActivityCompat;
@@ -12,9 +14,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.location.FusedLocationProviderClient;
@@ -23,41 +23,37 @@ import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.BitmapDescriptor;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.GeoPoint;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
 
-public class MapActivity extends AppCompatActivity implements OnMapReadyCallback, GoogleMap.OnMarkerClickListener,View.OnClickListener, GoogleMap.OnMarkerDragListener {
+public class MapActivity extends AppCompatActivity implements OnMapReadyCallback, GoogleMap.OnMarkerClickListener ,View.OnClickListener, GoogleMap.OnMarkerDragListener {
     // private static final String TAG = MapActivity.class.getSimpleName();
     private static final String TAG = "sportIsrael";
-
     BottomNavigationView menu_bar_view;
     private static final LatLng DORON = new LatLng(32.124699,34.817350);
-    private static final LatLng MAUZ_AVIV = new LatLng(32.109579,34.814509);
-    private static final LatLng ROPES_COURT = new LatLng(32.124803,34.811851);
-    private static final LatLng SUN_CITY_COURT = new LatLng(32.124086,34.827155);
 
     EditText court_title;
     EditText court_description;
-    Button new_court;
-    Button create;
-    LinearLayout hidden;
-    LinearLayout info;
-    ImageView info_court_image;
-    TextView info_title;
-    Button info_full_button;
-    Button info_empty_button;
-    Button info_players_button;
+    Button add_court;
+    Button create_court;
+    LinearLayout new_court_information;
+    Button save_new_court;
 
-    private Marker ropes_court;
-    private Marker doron;
-    private Marker mauz_aviv;
-    private Marker sun_city_court;
     Marker current_marker;
-
+    private Marker new_court_marker;
 
     private GoogleMap mMap;
     // The entry point to the Fused Location Provider.
@@ -73,6 +69,7 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
     // The geographical location where the device is currently located. That is, the last-known
     // location retrieved by the Fused Location Provider.
     private Location mLastKnownLocation;
+    FirebaseFirestore mDB;
 
 
     @Override
@@ -81,32 +78,35 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
         // Retrieve the content view that renders the map.
         setContentView(R.layout.activity_map);
 
-        new_court = findViewById(R.id.add_court);
+        add_court = findViewById(R.id.add_court);
         court_title = findViewById(R.id.court_title);
         court_description = findViewById(R.id.court_discription);
-        create = findViewById(R.id.create_button);
-        hidden = (LinearLayout) findViewById(R.id.hiddenLayout);
-        info = (LinearLayout) findViewById(R.id.court_info);
-        info_court_image = findViewById(R.id.image);
-        info_title = findViewById(R.id.info_court_name);
-        info_empty_button = findViewById(R.id.court_is_empty);
-        info_full_button = findViewById(R.id.court_is_full);
-        info_players_button = findViewById(R.id.court_is_searching_for_players);
+        create_court = findViewById(R.id.create_button);
+        new_court_information = findViewById(R.id.new_court_layout);
+
+        save_new_court = findViewById(R.id.save_new_court);
 
         menu_bar_view = (BottomNavigationView)findViewById(R.id.navigation_bar);
         NavigationBar navigation_bar = new NavigationBar(this);
         // Set actions for pressing menu bar options.
         menu_bar_view.setOnNavigationItemSelectedListener(navigation_bar);
 
+        // Access a Cloud Firestore instance from your Activity
+        mDB = FirebaseFirestore.getInstance();
+
         // Get the SupportMapFragment and request notification
         // when the map is ready to be used.
         SupportMapFragment mapFragment = (SupportMapFragment)getSupportFragmentManager().findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
-        new_court.setOnClickListener(this);
-        create.setOnClickListener(this);
+        add_court.setOnClickListener(this);
+        create_court.setOnClickListener(this);
+        save_new_court.setOnClickListener(this);
 
         // Construct a FusedLocationProviderClient.
         mFusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(this);
+
+        current_marker = null;
+        new_court_marker = null;
     }
 
     /**
@@ -147,7 +147,6 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
         }
         // updateLocationUI();
     }
-
     /**
      * Manipulates the map when it's available.
      * This callback is triggered when the map is ready to be used.
@@ -155,30 +154,49 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
     @Override
     public void onMapReady(GoogleMap googleMap) {
         Log.d("SportIsrael", "Entered onMapReady");
-        // Add a marker in Sydney, Australia,
+        // Add a marker for every court in the DB.
+        mDB.collection("courts")
+                .get()
+                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                        if (task.isSuccessful()) {
+                            for (QueryDocumentSnapshot document : task.getResult()) {
+                                Court court = document.toObject(Court.class);
+                                Log.d(TAG, court.toString());
+                                if (court.getTitle() == null || court.getLocation() == null)
+                                {
+                                    continue;
+                                }
+                                BitmapDescriptor marker_color;
+                                switch(court.getState())
+                                {
+                                    case "empty":
+                                        marker_color = BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN);
+                                        break;
+                                    case "full":
+                                        marker_color = BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_RED);
+                                        break;
+                                    case "searching":
+                                        marker_color = BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_BLUE);
+                                        break;
+                                    default:
+                                        marker_color = BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_CYAN);
+                                        break;
+                                }
+                                mMap.addMarker(new MarkerOptions()
+                                    .position(court.getLatLng())
+                                    .title(court.getTitle())
+                                    .icon(marker_color)
+                                    );
+                            }
+                        } else {
+                            Log.w(TAG, "Error getting documents.", task.getException());
+                        }
+                    }
+                });
 
         mMap = googleMap;
-
-        doron = mMap.addMarker(new MarkerOptions()
-                .position(DORON)
-                .title("Doron court")
-                .snippet("basketball and soccer court")
-                .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN)));
-        mauz_aviv = mMap.addMarker(new MarkerOptions()
-                .position(MAUZ_AVIV)
-                .title("Mauz aviv court")
-                .snippet("basketball and soccer court")
-                .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN)));
-        ropes_court = mMap.addMarker(new MarkerOptions()
-                .position(ROPES_COURT)
-                .title("Neve gan court")
-                .snippet("basketball and soccer court")
-                .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN)));
-        sun_city_court = mMap.addMarker(new MarkerOptions()
-                .position(SUN_CITY_COURT)
-                .title("Sun City court")
-                .snippet("basketball court")
-                .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN)));
 
         mMap.setOnMarkerClickListener(this);
         mMap.setOnMarkerDragListener(this);
@@ -257,100 +275,117 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
     }
 
     @Override
-    public boolean onMarkerClick(Marker marker)
+    public boolean onMarkerClick(final Marker marker)
     {
-
-        info.setVisibility(View.VISIBLE);
-        info_title.setText(marker.getTitle());
-        set_current_marker(marker);
-        info_players_button.setOnClickListener(this);
-        info_full_button.setOnClickListener(this);
-        info_empty_button.setOnClickListener(this);
-
+        Log.d(TAG, "clicked on marker: " + marker.getTitle());
+        Log.d(TAG, "sending intent to show court information");
+        Intent show_court_information = new Intent(this, CourtInformationActivity.class);
+        show_court_information.putExtra("court_title", marker.getTitle());
+        startActivity(show_court_information);
         return false;
+
     }
 
     @Override
     public void onClick(View button)
     {
-        if (button == create)
-            on_create_button_click();
-        else if (button == new_court)
+        if (button == create_court)
+            on_create_court_button_click();
+        else if (button == add_court)
             on_add_court_button_click();
-        else if (button == info_empty_button)
-            current_marker.setIcon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN));
-        else if (button == info_full_button)
-            current_marker.setIcon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_RED));
-        else if (button == info_players_button)
-            current_marker.setIcon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_BLUE));
+        else if (button == save_new_court)
+            set_final_court_location();
 
-        info.setVisibility(View.GONE);
     }
+
+    public  void set_final_court_location()
+    {
+        if (new_court_marker == null) {
+            Toast.makeText(this, "new court empty", Toast.LENGTH_SHORT).show();
+            return;
+        }
+        new_court_marker.setPosition(new_court_marker.getPosition());
+        new_court_marker.setDraggable(false);
+        GeoPoint final_marker_position = new GeoPoint(new_court_marker.getPosition().latitude, new_court_marker.getPosition().longitude);
+        mDB.collection("courts").document(new_court_marker.getTitle())
+                .update("location", final_marker_position)
+                .addOnSuccessListener(new OnSuccessListener<Void>() {
+                    @Override
+                    public void onSuccess(Void aVoid) {
+                        Log.d(TAG, "court location successfully updated!");
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        Log.w(TAG, "Error updating location", e);
+                    }
+                });
+
+        add_court.setVisibility(View.VISIBLE);
+        save_new_court.setVisibility(View.GONE);
+
+    }
+
     public void on_add_court_button_click()
     {
         // hides layout
-        if(hidden.getVisibility() == View.VISIBLE)
-            hidden.setVisibility(View.GONE);
+        if(new_court_information.getVisibility() == View.VISIBLE)
+            new_court_information.setVisibility(View.GONE);
         // shows layout
         else
-            hidden.setVisibility(View.VISIBLE);
+            new_court_information.setVisibility(View.VISIBLE);
     }
 
-    public void on_create_button_click()
+    public void on_create_court_button_click()
     {
-        String new_court_title = "";
-        String new_court_disception = "";
-        LatLng curret_place = new LatLng(mLastKnownLocation.getLatitude(),mLastKnownLocation.getLongitude());
+        String new_court_title;
+        String new_court_description;
         if (court_description.getText() != null && court_title.getText() != null) {
-            new_court_disception = court_description.getText().toString();
+            new_court_description = court_description.getText().toString();
             new_court_title = court_title.getText().toString();
         }
         else
         {
-            Toast.makeText(this,"Please enter court discreption and title", Toast.LENGTH_LONG).show();
+            Toast.makeText(this,"Please enter court description and title", Toast.LENGTH_LONG).show();
+            return;
         }
-        Marker new_mark = mMap.addMarker(new MarkerOptions()
-            .title(new_court_title)
-            .position(curret_place)
-            .snippet(new_court_disception)
+        GeoPoint current_place = new GeoPoint(mLastKnownLocation.getLatitude(),mLastKnownLocation.getLongitude());
+        Court new_court = new Court(new_court_title, new_court_description, current_place,"empty");
+        // Adding new court to DB.
+        mDB.collection("courts").document(new_court.getTitle()).set(new_court);
+
+        new_court_marker = mMap.addMarker(new MarkerOptions()
+            .title(new_court.getTitle())
+            .position(new_court.getLatLng())
+            .snippet(new_court.getDescription())
             .draggable(true)
             .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN)));
 
-        hidden.setVisibility(View.GONE);
+        // Empty new court fields.
         court_title.setText("");
         court_description.setText("");
-        // TODO: change layout to gone.
-    }
 
-    public void set_current_marker(Marker marker)
-    {
-        String current_marker_title = marker.getTitle();
-        if(current_marker_title.equals(doron.getTitle()))
-            current_marker = doron;
-        else if (current_marker_title.equals(ropes_court.getTitle()))
-            current_marker = ropes_court;
-        else if (current_marker_title.equals(mauz_aviv.getTitle()))
-            current_marker = mauz_aviv;
-        else if (current_marker_title.equals(sun_city_court.getTitle()))
-            current_marker = sun_city_court;
+        new_court_information.setVisibility(View.GONE);
+        add_court.setVisibility(View.GONE);
+        save_new_court.setVisibility(View.VISIBLE);
     }
 
     @Override
     public void onMarkerDragStart(Marker marker)
     {
-       // Toast.makeText(this,"Drag the marker to the court's place", Toast.LENGTH_LONG).show();
+       Toast.makeText(this,"Drag the marker to the court's place", Toast.LENGTH_LONG).show();
     }
 
     @Override
     public void onMarkerDrag(Marker marker)
     {
-       // Toast.makeText(this,"when you leave the marker you cant change his place", Toast.LENGTH_SHORT).show();
+
     }
 
     @Override
     public void onMarkerDragEnd(Marker marker)
     {
-        marker.setPosition(marker.getPosition());
-        marker.setDraggable(false);
+
     }
 }
