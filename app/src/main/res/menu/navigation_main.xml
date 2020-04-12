@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <item
+        android:id="@+id/action_groups"
+        android:enabled="true"
+        android:icon="@drawable/navigation_group"
+        android:title="@string/groups_page_title"
+        app:showAsAction="ifRoom" />
+    <item
+        android:id="@+id/action_map"
+        android:enabled="true"
+        android:icon="@drawable/navigation_map"
+        android:title="@string/map_page_title"
+        app:showAsAction="ifRoom" />
+    <item
+        android:id="@+id/action_profile"
+        android:enabled="true"
+        android:icon="@drawable/navigation_profile"
+        android:title="@string/profile_page_title"
+        app:showAsAction="ifRoom" />
+</menu>

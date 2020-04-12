@@ -1,0 +1,7 @@
+<resources>
+    <string name="app_name">SportIsrael</string>
+    <string name="profile_page_title">My Profile</string>
+    <string name="map_page_title">Games Map</string>
+    <string name="groups_page_title">Sports Groups</string>
+    <string name="google_maps_key">AIzaSyBucogavHiIcbh3qfwSPaREqovFCDtHdU4</string>
+</resources>
