@@ -4,10 +4,9 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".MapActivity"
-    android:orientation="vertical"
     android:gravity="left"
-    >
+    android:orientation="vertical"
+    tools:context=".MapActivity">
 
     <android.support.design.widget.BottomNavigationView
         android:id="@+id/navigation_bar"
@@ -19,11 +18,80 @@
         app:menu="@menu/navigation_main" />
 
 
-    <fragment
+    <Button
+        android:id="@+id/add_court"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/white"
+        android:text="Add a new court"
+        android:textStyle="bold"
+        android:textColor="@color/black"
+        android:visibility="visible"/>
+
+    <!-- Enter new court information -->
+    <LinearLayout
+        android:id="@+id/new_court_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:gravity="center_horizontal"
+        android:visibility="gone">
+
+
+        <EditText
+            android:id="@+id/court_title"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/white"
+            android:hint="Court title"
+            android:textColor="@color/black"
+            android:textColorHint="@color/black"
+            android:textSize="20dp" />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@color/profile_line" />
+
+        <EditText
+            android:id="@+id/court_discription"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/white"
+            android:hint="Court discription"
+            android:textColor="@color/black"
+            android:textColorHint="@color/black"
+            android:textSize="20dp" />
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@color/profile_line" />
+        <Button
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/create_button"
+            android:text="Create"
+            android:textColor="@color/black"
+            android:textSize="20dp"
+            android:textStyle="bold"/>
+    </LinearLayout>
+
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/save_new_court"
+        android:text="Save Court"
+        android:textSize="20dp"
+        android:textColor="@color/black"
+        android:background="@drawable/green_button"
+        android:visibility="gone"/>
+
+
+    <fragment
         android:id="@+id/map"
         android:name="com.google.android.gms.maps.SupportMapFragment"
-        />
-    
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+
+
 </LinearLayout>

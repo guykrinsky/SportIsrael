@@ -10,6 +10,7 @@
     android:background="@color/black"
     >
 
+    <!--
     <android.support.design.widget.BottomNavigationView
         android:id="@+id/navigation_bar"
         android:layout_width="match_parent"
@@ -18,6 +19,7 @@
         app:itemIconTint="@color/white"
         app:itemTextColor="@color/white"
         app:menu="@menu/navigation_main" />
+        -->
 
     <TextView
         android:layout_width="wrap_content"
@@ -30,6 +32,36 @@
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         android:textStyle="bold"/>
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center_horizontal"
+        android:layout_marginTop="30dp"
+        >
+        <Button
+            android:id="@+id/main_login_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:padding="10dp"
+            android:text="Login"
+            android:textSize="20sp"
+            android:textColor="@color/white"
+            android:background="@color/colorPrimary"
+            android:textStyle="italic"/>
+        <Button
+            android:id="@+id/main_register_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:padding="10dp"
+            android:layout_marginLeft="10dp"
+            android:text="Register"
+            android:textSize="20sp"
+            android:textColor="@color/white"
+            android:background="@color/colorPrimary"
+            android:textStyle="italic"/>
+    </LinearLayout>
 
     <ImageView
         android:layout_width="match_parent"

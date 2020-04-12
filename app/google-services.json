@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "19843470066",
+    "firebase_url": "https://sportisrael-29c27.firebaseio.com",
+    "project_id": "sportisrael-29c27",
+    "storage_bucket": "sportisrael-29c27.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:19843470066:android:576069bdbd9536a9d0f66b",
+        "android_client_info": {
+          "package_name": "com.example.ykrin.sportisrael"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "19843470066-2c82j785spkc5envsro0sgu8s0pkoafb.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.ykrin.sportisrael",
+            "certificate_hash": "009be270d870b93ef2b41f5467f584dbded9eb38"
+          }
+        },
+        {
+          "client_id": "19843470066-dapgrl8mpkqstp2u2uu9hjack5ic188h.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyC_IMsLRzh5_27Xd8SJvqODKOxgJADTh1I"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "19843470066-dapgrl8mpkqstp2u2uu9hjack5ic188h.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
