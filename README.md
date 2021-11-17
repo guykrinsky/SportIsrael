@@ -12,5 +12,7 @@ I used FireBase (platform developed by google that offers free data-base serviec
 
 ## Screenshots from the app
 ![MAP](screenshots/map.png)
-![court description] (screenshots/court_description.png)
+
+![court description](screenshots/court_description.png)
+
 ![profile](screenshots/profile.png)
