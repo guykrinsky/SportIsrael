@@ -169,15 +169,16 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
                                     continue;
                                 }
                                 BitmapDescriptor marker_color;
-                                switch(court.getState())
+                                CourtState state = CourtState.fromValue(court.getState());
+                                switch(state)
                                 {
-                                    case "empty":
+                                    case EMPTY:
                                         marker_color = BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN);
                                         break;
-                                    case "full":
+                                    case FULL:
                                         marker_color = BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_RED);
                                         break;
-                                    case "searching":
+                                    case SEARCHING:
                                         marker_color = BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_BLUE);
                                         break;
                                     default:
@@ -301,7 +302,7 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
     public  void set_final_court_location()
     {
         if (new_court_marker == null) {
-            Toast.makeText(this, "new court empty", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, R.string.new_court_empty, Toast.LENGTH_SHORT).show();
             return;
         }
         new_court_marker.setPosition(new_court_marker.getPosition());
@@ -347,11 +348,17 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
         }
         else
         {
-            Toast.makeText(this,"Please enter court description and title", Toast.LENGTH_LONG).show();
+            Toast.makeText(this, R.string.enter_court_info, Toast.LENGTH_LONG).show();
             return;
         }
-        GeoPoint current_place = new GeoPoint(mLastKnownLocation.getLatitude(),mLastKnownLocation.getLongitude());
-        Court new_court = new Court(new_court_title, new_court_description, current_place,"empty");
+        
+        if (mLastKnownLocation == null) {
+            Toast.makeText(this, R.string.location_not_available, Toast.LENGTH_LONG).show();
+            return;
+        }
+        
+        GeoPoint current_place = new GeoPoint(mLastKnownLocation.getLatitude(), mLastKnownLocation.getLongitude());
+        Court new_court = new Court(new_court_title, new_court_description, current_place, CourtState.EMPTY.getValue());
         // Adding new court to DB.
         mDB.collection("courts").document(new_court.getTitle()).set(new_court);
 
@@ -374,7 +381,7 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
     @Override
     public void onMarkerDragStart(Marker marker)
     {
-       Toast.makeText(this,"Drag the marker to the court's place", Toast.LENGTH_LONG).show();
+       Toast.makeText(this, R.string.drag_marker_hint, Toast.LENGTH_LONG).show();
     }
 
     @Override
