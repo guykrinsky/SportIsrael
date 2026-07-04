@@ -1,83 +1,114 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".RegisterActivity"
-    android:gravity="center_horizontal"
-    android:orientation="vertical"
-    android:background="@drawable/blue_to_red">
+    android:background="@color/background"
+    android:fillViewport="true"
+    tools:context=".RegisterActivity">
 
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="40dp"
-        android:text="sportIsrael"
-        android:textSize="40sp"
-        android:textColor="@color/white"
-        android:textStyle="bold"/>
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="5dp"
-        android:text="create new account"
-        android:textSize="30sp"
-        android:textColor="@color/white"
-        android:textStyle="italic"/>
-    <EditText
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/full_name"
-        android:hint="Enter your full name"
-        android:inputType="textPersonName"
-        android:textColorHint="@color/white"
-        android:textColor="@color/white"
-        android:textSize="25sp"/>
-    <EditText
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/email"
-        android:hint="Enter your email"
-        android:inputType="textEmailAddress"
-        android:textColorHint="@color/white"
-        android:textColor="@color/white"
-        android:textSize="25sp"/>
-    <EditText
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/password"
-        android:hint="Enter your password"
-        android:inputType="textPassword"
-        android:textColorHint="@color/white"
-        android:textColor="@color/white"
-        android:textSize="25sp"/>
-    <EditText
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/phone_number"
-        android:hint="Enter your phone number"
-        android:inputType="phone"
-        android:textColorHint="@color/white"
-        android:textColor="@color/white"
-        android:textSize="25sp"/>
-    <Button
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/register_button"
-        android:background="@color/white"
-        android:layout_marginTop="80dp"
-        android:text="Register"
-        android:textSize="40sp"
-        android:textColor="@color/black"/>
+        android:orientation="vertical"
+        android:padding="@dimen/spacing_l">
 
-    <ProgressBar
-    android:id="@+id/progressBar"
-    style="?android:attr/progressBarStyle"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:visibility="invisible" />
+        <TextView
+            style="@style/Text.Display"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="@dimen/spacing_xl"
+            android:text="SportIsrael"
+            android:textColor="@color/colorPrimary" />
 
+        <TextView
+            style="@style/Text.Subtitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="@dimen/spacing_xs"
+            android:text="Create your account" />
 
-</LinearLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/spacing_xl"
+            android:orientation="vertical"
+            android:background="@drawable/card_background"
+            android:padding="@dimen/spacing_m">
+
+            <TextView
+                style="@style/Text.Caption"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Full name" />
+
+            <EditText
+                android:id="@+id/full_name"
+                style="@style/FormField"
+                android:layout_marginTop="@dimen/spacing_xs"
+                android:hint="Enter your full name"
+                android:inputType="textPersonName" />
+
+            <TextView
+                style="@style/Text.Caption"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/spacing_m"
+                android:text="Email" />
+
+            <EditText
+                android:id="@+id/email"
+                style="@style/FormField"
+                android:layout_marginTop="@dimen/spacing_xs"
+                android:hint="Enter your email"
+                android:inputType="textEmailAddress" />
+
+            <TextView
+                style="@style/Text.Caption"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/spacing_m"
+                android:text="Password" />
+
+            <EditText
+                android:id="@+id/password"
+                style="@style/FormField"
+                android:layout_marginTop="@dimen/spacing_xs"
+                android:hint="At least 6 characters"
+                android:inputType="textPassword" />
+
+            <TextView
+                style="@style/Text.Caption"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/spacing_m"
+                android:text="Phone number" />
+
+            <EditText
+                android:id="@+id/phone_number"
+                style="@style/FormField"
+                android:layout_marginTop="@dimen/spacing_xs"
+                android:hint="Enter your phone number"
+                android:inputType="phone" />
+        </LinearLayout>
+
+        <Button
+            android:id="@+id/register_button"
+            style="@style/Button.Primary"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/spacing_l"
+            android:text="Register" />
+
+        <ProgressBar
+            android:id="@+id/progressBar"
+            style="?android:attr/progressBarStyle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="@dimen/spacing_m"
+            android:visibility="invisible" />
+    </LinearLayout>
+</ScrollView>
