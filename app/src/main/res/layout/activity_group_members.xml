@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="@color/background"
+    tools:context=".GroupMembersActivity">
+
+    <!-- In-layout header -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center_vertical"
+        android:background="@color/surface"
+        android:paddingLeft="@dimen/spacing_xs"
+        android:paddingRight="@dimen/spacing_m">
+
+        <ImageButton
+            android:id="@+id/members_back"
+            android:layout_width="@dimen/touch_target_min"
+            android:layout_height="@dimen/touch_target_min"
+            android:background="@android:color/transparent"
+            android:contentDescription="Back"
+            app:srcCompat="@drawable/ic_back" />
+
+        <TextView
+            android:id="@+id/members_header_title"
+            style="@style/Text.Body"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:textStyle="bold"
+            android:text="@string/groups_members" />
+    </LinearLayout>
+
+    <ProgressBar
+        android:id="@+id/members_progress"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="@dimen/spacing_xl" />
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/members_list"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:clipToPadding="false"
+        android:paddingTop="@dimen/spacing_m"
+        android:paddingBottom="@dimen/spacing_m"
+        android:visibility="gone" />
+</LinearLayout>
