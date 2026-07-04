@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- 8dp spacing scale -->
+    <dimen name="spacing_xs">4dp</dimen>
+    <dimen name="spacing_s">8dp</dimen>
+    <dimen name="spacing_m">16dp</dimen>
+    <dimen name="spacing_l">24dp</dimen>
+    <dimen name="spacing_xl">32dp</dimen>
+    <dimen name="spacing_xxl">48dp</dimen>
+
+    <!-- Shape -->
+    <dimen name="corner_radius">12dp</dimen>
+    <dimen name="corner_radius_small">8dp</dimen>
+
+    <!-- Components -->
+    <dimen name="button_min_height">48dp</dimen>
+    <dimen name="touch_target_min">48dp</dimen>
+</resources>
