@@ -10,7 +10,7 @@ public class GroupsActivity extends AppCompatActivity {
 
     BottomNavigationView menu_bar_view;
     ExpandableTextView expandable_text;
-    String baketball_groups = " basketball groups \n"  +
+    String basketball_groups = " basketball groups \n"  +
             "all basketball groups:";
     String soccer_groups = " soccer \n"  +
             "all soccer groups:";
@@ -25,7 +25,7 @@ public class GroupsActivity extends AppCompatActivity {
 
 
         expandable_text = (ExpandableTextView)findViewById(R.id.expand_text_view);
-        expandable_text.setText(baketball_groups);
+        expandable_text.setText(basketball_groups);
 
         expandable_text = (ExpandableTextView)findViewById(R.id.expand_text_soccer);
         expandable_text.setText(soccer_groups);

@@ -91,29 +91,29 @@ public class CourtInformationActivity extends AppCompatActivity implements View.
 
     @Override
     public void onClick(View button) {
-        String new_state = "";
+        CourtState new_state = null;
         if (button == info_empty_button)
         {
-            new_state = "empty";
+            new_state = CourtState.EMPTY;
         }
         else if (button == info_full_button)
         {
-            new_state = "full";
+            new_state = CourtState.FULL;
         }
         else if (button == info_players_button)
         {
-            new_state = "searching";
+            new_state = CourtState.SEARCHING;
         }
         else if (button == back_to_the_map)
         {
             Intent back_to_map_activity = new Intent(this, MapActivity.class);
             startActivity(back_to_map_activity);
         }
-        if (!new_state.equals(""))
+        if (new_state != null)
         {
-            court.setState(new_state);
+            court.setState(new_state.getValue());
             mDB.collection("courts").document(court.getTitle()).update("state", court.getState());
-            Toast.makeText(this, "Changed court state to " + new_state, Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, getString(R.string.court_state_changed, new_state.getValue()), Toast.LENGTH_SHORT).show();
         }
     }
 

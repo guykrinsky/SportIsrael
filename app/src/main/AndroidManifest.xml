@@ -37,7 +37,6 @@
             android:name=".MapActivity"
             android:label="@string/map_page_title" />
         <activity android:name=".RegisterActivity" />
-        <activity android:name=".LoginActivity" />
         <activity android:name=".CourtInformationActivity" />
     </application>
 

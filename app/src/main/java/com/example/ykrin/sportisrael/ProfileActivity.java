@@ -72,7 +72,7 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
     {
         if (user == null)
         {
-            Toast.makeText(ProfileActivity.this, "User null", Toast.LENGTH_LONG).show();
+            Toast.makeText(ProfileActivity.this, R.string.user_null, Toast.LENGTH_LONG).show();
             username.setText(BIBI_USERNAME);
         }
         else
@@ -104,16 +104,16 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
         if (button_pressed == invite_button)
         {
             // If pressed on invite button, move to game map activity.
-            Toast.makeText(this, "invitation sent", Toast.LENGTH_SHORT).show();
-            Toast.makeText(this, "select a court to play on", Toast.LENGTH_LONG).show();
+            Toast.makeText(this, R.string.invitation_sent, Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, R.string.select_court, Toast.LENGTH_LONG).show();
             Intent intent_map = new Intent(this, MapActivity.class);
             this.startActivity(intent_map);
         }
         if (button_pressed == logout)
         {
             FirebaseAuth.getInstance().signOut();
-            Intent intent_login = new Intent(this,LoginActivity.class);
-            this.startActivity(intent_login);
+            Intent intent_main = new Intent(this, MainActivity.class);
+            this.startActivity(intent_main);
         }
 
     }

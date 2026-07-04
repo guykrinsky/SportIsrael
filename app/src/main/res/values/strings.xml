@@ -4,4 +4,22 @@
     <string name="map_page_title">Games Map</string>
     <string name="groups_page_title">Sports Groups</string>
     <string name="google_maps_key">AIzaSyBucogavHiIcbh3qfwSPaREqovFCDtHdU4</string>
+    
+    <!-- Authentication messages -->
+    <string name="login_successful">Login Successful</string>
+    <string name="user_created">User created!</string>
+    <string name="error_prefix">Error: </string>
+    
+    <!-- Court messages -->
+    <string name="court_state_changed">Changed court state to %s</string>
+    <string name="location_not_available">Location not available. Please enable location services.</string>
+    <string name="enter_court_info">Please enter court description and title</string>
+    <string name="new_court_empty">new court empty</string>
+    <string name="drag_marker_hint">Drag the marker to the court\'s place</string>
+    <string name="court_location_updated">Court location successfully updated!</string>
+    
+    <!-- Profile messages -->
+    <string name="invitation_sent">invitation sent</string>
+    <string name="select_court">select a court to play on</string>
+    <string name="user_null">User null</string>
 </resources>
