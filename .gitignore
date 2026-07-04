@@ -64,6 +64,11 @@ captures/
 # Google Services (e.g. APIs or Firebase)
 google-services.json
 
+# Script secrets and dependencies
+scripts/serviceAccountKey.json
+scripts/node_modules/
+scripts/package-lock.json
+
 # Freeline
 freeline.py
 freeline/
