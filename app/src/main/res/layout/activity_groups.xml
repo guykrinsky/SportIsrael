@@ -2,13 +2,11 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    xmlns:expandableTextView="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".GroupsActivity"
     android:orientation="vertical"
-    android:gravity="center_horizontal"
-    android:background="@color/background">
+    android:background="@color/background"
+    tools:context=".GroupsActivity">
 
     <android.support.design.widget.BottomNavigationView
         android:id="@+id/navigation_bar"
@@ -19,113 +17,125 @@
         app:itemTextColor="@color/white"
         app:menu="@menu/navigation_main" />
 
-    <com.ms.square.android.expandabletextview.ExpandableTextView
-        android:id="@+id/expand_text_my_groups"
+    <TextView
+        style="@style/Text.Title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/spacing_m"
+        android:layout_marginTop="@dimen/spacing_m"
+        android:text="@string/groups_title" />
+
+    <android.support.design.widget.TabLayout
+        android:id="@+id/groups_tabs"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/spacing_s"
+        android:background="@color/background"
+        app:tabIndicatorColor="@color/colorPrimary"
+        app:tabSelectedTextColor="@color/colorPrimary"
+        app:tabTextColor="@color/on_surface_secondary">
+
+        <android.support.design.widget.TabItem
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/groups_tab_my" />
+
+        <android.support.design.widget.TabItem
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/groups_tab_discover" />
+    </android.support.design.widget.TabLayout>
+
+    <EditText
+        android:id="@+id/groups_search"
+        style="@style/FormField"
         android:layout_marginLeft="@dimen/spacing_m"
         android:layout_marginRight="@dimen/spacing_m"
         android:layout_marginTop="@dimen/spacing_m"
-        android:background="@drawable/my_groups"
-        expandableTextView:animAlphaStart="1"
-        expandableTextView:maxCollapsedLines="1">
+        android:hint="@string/groups_search_hint"
+        android:inputType="text"
+        android:imeOptions="actionSearch"
+        android:maxLines="1" />
 
-        <TextView
-            android:id="@id/expandable_text"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="@dimen/spacing_m"
-            android:layout_marginRight="@dimen/spacing_m"
-            android:layout_marginTop="@dimen/spacing_s"
-            android:textColor="#ff8400"
-            android:textSize="20sp"
-            android:textStyle="bold" />
-
-        <ImageButton
-            android:id="@id/expand_collapse"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="end|bottom"
-            android:background="@android:color/transparent"
-            android:contentDescription="Expand or collapse my groups"
-            android:padding="@dimen/spacing_m" />
-    </com.ms.square.android.expandabletextview.ExpandableTextView>
-
-    <com.ms.square.android.expandabletextview.ExpandableTextView
-        android:id="@+id/expand_text_view"
+    <HorizontalScrollView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="@dimen/spacing_m"
-        android:layout_marginRight="@dimen/spacing_m"
-        android:layout_marginTop="@dimen/spacing_m"
-        android:background="@drawable/basketball_groups"
-        expandableTextView:animAlphaStart="1"
-        expandableTextView:maxCollapsedLines="1">
+        android:layout_marginTop="@dimen/spacing_s"
+        android:paddingLeft="@dimen/spacing_m"
+        android:paddingRight="@dimen/spacing_m"
+        android:scrollbars="none">
 
-        <TextView
-            android:id="@id/expandable_text"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="@dimen/spacing_m"
-            android:layout_marginRight="@dimen/spacing_m"
-            android:layout_marginTop="@dimen/spacing_s"
-            android:textColor="#ff8400"
-            android:textSize="20sp"
-            android:textStyle="bold" />
-
-        <ImageButton
-            android:id="@id/expand_collapse"
+        <LinearLayout
+            android:id="@+id/sport_chips_container"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="end|bottom"
-            android:background="@android:color/transparent"
-            android:contentDescription="Expand or collapse basketball groups"
-            android:padding="@dimen/spacing_m" />
-    </com.ms.square.android.expandabletextview.ExpandableTextView>
+            android:orientation="horizontal" />
+    </HorizontalScrollView>
 
-    <com.ms.square.android.expandabletextview.ExpandableTextView
-        android:id="@+id/expand_text_soccer"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="@dimen/spacing_m"
-        android:layout_marginRight="@dimen/spacing_m"
-        android:layout_marginTop="@dimen/spacing_m"
-        android:background="@drawable/soccer_groups"
-        expandableTextView:animAlphaStart="1"
-        expandableTextView:maxCollapsedLines="1">
-
-        <TextView
-            android:id="@id/expandable_text"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="@dimen/spacing_m"
-            android:layout_marginRight="@dimen/spacing_m"
-            android:layout_marginTop="@dimen/spacing_s"
-            android:textColor="@color/white"
-            android:textSize="20sp"
-            android:textStyle="bold" />
-
-        <ImageButton
-            android:id="@id/expand_collapse"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="end|bottom"
-            android:background="@android:color/transparent"
-            android:contentDescription="Expand or collapse soccer groups"
-            android:padding="@dimen/spacing_m" />
-    </com.ms.square.android.expandabletextview.ExpandableTextView>
-
-    <!-- Spacer: pushes the button below to the bottom of the screen -->
-    <View
+    <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="1" />
+        android:layout_weight="1"
+        android:layout_marginTop="@dimen/spacing_s">
 
-    <Button
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_margin="@dimen/spacing_m"
-        style="@style/Button.Primary"
-        android:text="New group" />
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/groups_list"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:clipToPadding="false"
+            android:paddingTop="@dimen/spacing_s"
+            android:paddingBottom="88dp" />
 
+        <!-- Empty / error state -->
+        <LinearLayout
+            android:id="@+id/groups_empty_state"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:orientation="vertical"
+            android:padding="@dimen/spacing_xl"
+            android:visibility="gone">
+
+            <ImageView
+                android:layout_width="48dp"
+                android:layout_height="48dp"
+                android:contentDescription="Groups"
+                app:srcCompat="@drawable/ic_people" />
+
+            <TextView
+                android:id="@+id/groups_empty_text"
+                style="@style/Text.Subtitle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/spacing_m"
+                android:gravity="center"
+                android:text="@string/groups_empty_mine" />
+
+            <Button
+                android:id="@+id/groups_empty_action"
+                style="@style/Button.Secondary"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/spacing_m"
+                android:text="@string/groups_tab_discover" />
+        </LinearLayout>
+
+        <ProgressBar
+            android:id="@+id/groups_progress"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:visibility="gone" />
+
+        <android.support.design.widget.FloatingActionButton
+            android:id="@+id/groups_fab"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom|end"
+            android:layout_margin="@dimen/spacing_m"
+            android:contentDescription="Create a new group"
+            app:backgroundTint="@color/colorPrimary"
+            app:srcCompat="@drawable/ic_add" />
+    </FrameLayout>
 </LinearLayout>
