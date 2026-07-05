@@ -36,7 +36,7 @@
         <activity
             android:name=".MapActivity"
             android:label="@string/map_page_title" />
-        <activity android:name=".RegisterActivity" />
+        <activity android:name=".AuthActivity" />
         <activity android:name=".CourtInformationActivity" />
         <activity android:name=".GroupDetailActivity" />
         <activity android:name=".CreateGroupActivity" />

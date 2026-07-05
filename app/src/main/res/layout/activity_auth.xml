@@ -1,0 +1,208 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/background"
+    android:fillViewport="true"
+    tools:context=".AuthActivity">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="@dimen/spacing_l">
+
+        <TextView
+            style="@style/Text.Display"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="@dimen/spacing_xl"
+            android:text="SportIsrael"
+            android:textColor="@color/colorPrimary" />
+
+        <TextView
+            android:id="@+id/auth_subtitle"
+            style="@style/Text.Subtitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="@dimen/spacing_xs"
+            android:text="Welcome back" />
+
+        <!-- Login / Register mode switch -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/spacing_l"
+            android:orientation="horizontal"
+            android:background="@drawable/card_background"
+            android:padding="@dimen/spacing_xs">
+
+            <Button
+                android:id="@+id/auth_tab_login"
+                style="@style/Button"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:background="@drawable/btn_primary"
+                android:textColor="@color/white"
+                android:text="Sign in" />
+
+            <Button
+                android:id="@+id/auth_tab_register"
+                style="@style/Button"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:background="@android:color/transparent"
+                android:textColor="@color/on_surface_secondary"
+                android:text="Register" />
+        </LinearLayout>
+
+        <!-- Form card -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/spacing_m"
+            android:orientation="vertical"
+            android:background="@drawable/card_background"
+            android:padding="@dimen/spacing_m">
+
+            <TextView
+                android:id="@+id/label_full_name"
+                style="@style/Text.Caption"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Full name"
+                android:visibility="gone" />
+
+            <EditText
+                android:id="@+id/full_name"
+                style="@style/FormField"
+                android:layout_marginTop="@dimen/spacing_xs"
+                android:hint="Enter your full name"
+                android:inputType="textPersonName"
+                android:visibility="gone" />
+
+            <TextView
+                android:id="@+id/label_email"
+                style="@style/Text.Caption"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Email" />
+
+            <EditText
+                android:id="@+id/email"
+                style="@style/FormField"
+                android:layout_marginTop="@dimen/spacing_xs"
+                android:hint="Enter your email"
+                android:inputType="textEmailAddress" />
+
+            <TextView
+                style="@style/Text.Caption"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/spacing_m"
+                android:text="Password" />
+
+            <EditText
+                android:id="@+id/password"
+                style="@style/FormField"
+                android:layout_marginTop="@dimen/spacing_xs"
+                android:hint="At least 6 characters"
+                android:inputType="textPassword" />
+
+            <TextView
+                android:id="@+id/label_phone"
+                style="@style/Text.Caption"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/spacing_m"
+                android:text="Phone number"
+                android:visibility="gone" />
+
+            <EditText
+                android:id="@+id/phone_number"
+                style="@style/FormField"
+                android:layout_marginTop="@dimen/spacing_xs"
+                android:hint="Enter your phone number"
+                android:inputType="phone"
+                android:visibility="gone" />
+        </LinearLayout>
+
+        <Button
+            android:id="@+id/auth_action_button"
+            style="@style/Button.Primary"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/spacing_l"
+            android:text="Sign in" />
+
+        <ProgressBar
+            android:id="@+id/progressBar"
+            style="?android:attr/progressBarStyle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="@dimen/spacing_m"
+            android:visibility="invisible" />
+
+        <!-- Dev-only quick login: visibility controlled by BuildConfig.DEBUG -->
+        <LinearLayout
+            android:id="@+id/dev_quick_login"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/spacing_xl"
+            android:orientation="vertical"
+            android:visibility="gone">
+
+            <TextView
+                style="@style/Text.Caption"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:text="Dev quick login" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/spacing_s"
+                android:orientation="horizontal">
+
+                <Button
+                    android:id="@+id/dev_login_admin"
+                    style="@style/Button.Secondary"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:paddingLeft="0dp"
+                    android:paddingRight="0dp"
+                    android:text="Admin" />
+
+                <Button
+                    android:id="@+id/dev_login_user"
+                    style="@style/Button.Secondary"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:layout_marginLeft="@dimen/spacing_s"
+                    android:paddingLeft="0dp"
+                    android:paddingRight="0dp"
+                    android:text="User" />
+
+                <Button
+                    android:id="@+id/dev_login_organizer"
+                    style="@style/Button.Secondary"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:layout_marginLeft="@dimen/spacing_s"
+                    android:paddingLeft="0dp"
+                    android:paddingRight="0dp"
+                    android:text="Organizer" />
+            </LinearLayout>
+        </LinearLayout>
+    </LinearLayout>
+</ScrollView>
