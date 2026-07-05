@@ -34,7 +34,6 @@ public class AuthActivity extends AppCompatActivity implements View.OnClickListe
     private static final String DEV_PASSWORD = "test123456";
     private static final String DEV_ADMIN_EMAIL = "admin@sportisrael.test";
     private static final String DEV_USER_EMAIL = "user@sportisrael.test";
-    private static final String DEV_ORGANIZER_EMAIL = "organizer@sportisrael.test";
 
     TextView auth_subtitle;
     Button tab_login;
@@ -50,7 +49,6 @@ public class AuthActivity extends AppCompatActivity implements View.OnClickListe
     LinearLayout dev_section;
     Button dev_admin;
     Button dev_user;
-    Button dev_organizer;
 
     FirebaseAuth f_auth;
     boolean is_login_mode = true;
@@ -74,7 +72,6 @@ public class AuthActivity extends AppCompatActivity implements View.OnClickListe
         dev_section = findViewById(R.id.dev_quick_login);
         dev_admin = findViewById(R.id.dev_login_admin);
         dev_user = findViewById(R.id.dev_login_user);
-        dev_organizer = findViewById(R.id.dev_login_organizer);
 
         f_auth = FirebaseAuth.getInstance();
 
@@ -86,7 +83,6 @@ public class AuthActivity extends AppCompatActivity implements View.OnClickListe
             dev_section.setVisibility(View.VISIBLE);
             dev_admin.setOnClickListener(this);
             dev_user.setOnClickListener(this);
-            dev_organizer.setOnClickListener(this);
         }
 
         applyMode();
@@ -110,8 +106,6 @@ public class AuthActivity extends AppCompatActivity implements View.OnClickListe
             devLogin(DEV_ADMIN_EMAIL, "Dev Admin");
         } else if (view == dev_user) {
             devLogin(DEV_USER_EMAIL, "Dev User");
-        } else if (view == dev_organizer) {
-            devLogin(DEV_ORGANIZER_EMAIL, "Dev Organizer");
         }
     }
 

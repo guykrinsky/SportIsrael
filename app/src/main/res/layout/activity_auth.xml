@@ -191,17 +191,6 @@
                     android:paddingLeft="0dp"
                     android:paddingRight="0dp"
                     android:text="User" />
-
-                <Button
-                    android:id="@+id/dev_login_organizer"
-                    style="@style/Button.Secondary"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:layout_marginLeft="@dimen/spacing_s"
-                    android:paddingLeft="0dp"
-                    android:paddingRight="0dp"
-                    android:text="Organizer" />
             </LinearLayout>
         </LinearLayout>
     </LinearLayout>
