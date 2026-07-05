@@ -31,8 +31,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     {
         if (button_pressed == m_register_button)
         {
-            Intent intent_register = new Intent(this, RegisterActivity.class);
-            startActivity(intent_register);
+            Intent intent_auth = new Intent(this, AuthActivity.class);
+            startActivity(intent_auth);
         }
     }
 }
