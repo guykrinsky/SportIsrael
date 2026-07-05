@@ -102,6 +102,7 @@ function toCourt(element) {
       title: title,
       description: details.join(' · '),
       state: 'unknown',
+      sport: sport,
       source: 'osm',
       osmId: element.id,
       _lat: lat,
@@ -184,7 +185,31 @@ async function main() {
   if (batchSize > 0) await batch.commit();
 
   console.log(`\nDone. Imported ${written} courts, skipped ${skipped} already-imported.`);
-  console.log('Open the app map to see them (cyan markers = state "unknown").');
+
+  // Backfill sport field on existing OSM courts that don't have it yet.
+  let updated = 0;
+  const allOsm = await db.collection('courts').where('source', '==', 'osm').get();
+  const updateBatch = db.batch();
+  let updateBatchSize = 0;
+  for (const doc of allOsm.docs) {
+    if (doc.get('sport')) continue;
+    const desc = doc.get('description') || '';
+    let sport = 'other';
+    for (const s of ['basketball', 'soccer', 'tennis', 'volleyball']) {
+      if (desc.toLowerCase().includes(s)) { sport = s; break; }
+    }
+    updateBatch.update(doc.ref, { sport: sport });
+    updated++;
+    updateBatchSize++;
+    if (updateBatchSize === 400) {
+      await updateBatch.commit();
+      updateBatchSize = 0;
+    }
+  }
+  if (updateBatchSize > 0) await updateBatch.commit();
+  if (updated > 0) console.log(`Backfilled sport field on ${updated} existing courts.`);
+
+  console.log('Open the app map to see them with sport-colored markers.');
 }
 
 main().catch(err => {

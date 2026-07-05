@@ -153,51 +153,9 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
      */
     @Override
     public void onMapReady(GoogleMap googleMap) {
-        Log.d("SportIsrael", "Entered onMapReady");
-        // Add a marker for every court in the DB.
-        mDB.collection("courts")
-                .get()
-                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-                    @Override
-                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                        if (task.isSuccessful()) {
-                            for (QueryDocumentSnapshot document : task.getResult()) {
-                                Court court = document.toObject(Court.class);
-                                Log.d(TAG, court.toString());
-                                if (court.getTitle() == null || court.getLocation() == null)
-                                {
-                                    continue;
-                                }
-                                BitmapDescriptor marker_color;
-                                CourtState state = CourtState.fromValue(court.getState());
-                                switch(state)
-                                {
-                                    case EMPTY:
-                                        marker_color = BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN);
-                                        break;
-                                    case FULL:
-                                        marker_color = BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_RED);
-                                        break;
-                                    case SEARCHING:
-                                        marker_color = BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_BLUE);
-                                        break;
-                                    default:
-                                        marker_color = BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_CYAN);
-                                        break;
-                                }
-                                mMap.addMarker(new MarkerOptions()
-                                    .position(court.getLatLng())
-                                    .title(court.getTitle())
-                                    .icon(marker_color)
-                                    );
-                            }
-                        } else {
-                            Log.w(TAG, "Error getting documents.", task.getException());
-                        }
-                    }
-                });
-
         mMap = googleMap;
+        Log.d(TAG, "onMapReady - loading courts");
+        loadCourts();
 
         mMap.setOnMarkerClickListener(this);
         mMap.setOnMarkerDragListener(this);
@@ -210,6 +168,56 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
 
         // Get the current location of the device and set the position of the map.
         getDeviceLocation();
+    }
+
+    private void loadCourts() {
+        mDB.collection("courts")
+                .get()
+                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                        if (task.isSuccessful()) {
+                            int count = 0;
+                            for (QueryDocumentSnapshot document : task.getResult()) {
+                                try {
+                                    Court court = document.toObject(Court.class);
+                                    if (court.getTitle() == null || court.getLocation() == null) {
+                                        continue;
+                                    }
+                                    BitmapDescriptor marker_color;
+                                    SportType sportType = SportType.fromValue(court.getSport());
+                                    switch (sportType) {
+                                        case BASKETBALL:
+                                            marker_color = BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_ORANGE);
+                                            break;
+                                        case SOCCER:
+                                            marker_color = BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN);
+                                            break;
+                                        case TENNIS:
+                                            marker_color = BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_YELLOW);
+                                            break;
+                                        case VOLLEYBALL:
+                                            marker_color = BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_BLUE);
+                                            break;
+                                        default:
+                                            marker_color = BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_CYAN);
+                                            break;
+                                    }
+                                    mMap.addMarker(new MarkerOptions()
+                                            .position(court.getLatLng())
+                                            .title(court.getTitle())
+                                            .icon(marker_color));
+                                    count++;
+                                } catch (Exception e) {
+                                    Log.e(TAG, "Failed to parse court doc: " + document.getId(), e);
+                                }
+                            }
+                            Log.d(TAG, "Loaded " + count + " courts onto map");
+                        } else {
+                            Log.e(TAG, "Error loading courts", task.getException());
+                        }
+                    }
+                });
     }
 
     /**
