@@ -184,29 +184,11 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
                                     if (court.getTitle() == null || court.getLocation() == null) {
                                         continue;
                                     }
-                                    BitmapDescriptor marker_color;
                                     SportType sportType = SportType.fromValue(court.getSport());
-                                    switch (sportType) {
-                                        case BASKETBALL:
-                                            marker_color = BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_ORANGE);
-                                            break;
-                                        case SOCCER:
-                                            marker_color = BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN);
-                                            break;
-                                        case TENNIS:
-                                            marker_color = BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_YELLOW);
-                                            break;
-                                        case VOLLEYBALL:
-                                            marker_color = BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_BLUE);
-                                            break;
-                                        default:
-                                            marker_color = BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_CYAN);
-                                            break;
-                                    }
                                     mMap.addMarker(new MarkerOptions()
                                             .position(court.getLatLng())
                                             .title(court.getTitle())
-                                            .icon(marker_color));
+                                            .icon(MarkerIconGenerator.getMarker(MapActivity.this, sportType)));
                                     count++;
                                 } catch (Exception e) {
                                     Log.e(TAG, "Failed to parse court doc: " + document.getId(), e);
@@ -375,7 +357,7 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
             .position(new_court.getLatLng())
             .snippet(new_court.getDescription())
             .draggable(true)
-            .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN)));
+            .icon(MarkerIconGenerator.getMarker(this, SportType.OTHER)));
 
         // Empty new court fields.
         court_title.setText("");
