@@ -57,9 +57,7 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
         profile_icon.setImageDrawable(mDrawable);
 
 
-        NavigationBar navigation_bar = new NavigationBar(this);
-        // Set actions for pressing menu bar options.
-        menu_bar_view.setOnNavigationItemSelectedListener(navigation_bar);
+        NavigationBar.attach(this, menu_bar_view);
 
         invite_button.setOnClickListener(this);
         friend_request_button.setOnClickListener(this);
