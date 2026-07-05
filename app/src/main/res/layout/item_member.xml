@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginLeft="@dimen/spacing_m"
+    android:layout_marginRight="@dimen/spacing_m"
+    android:layout_marginBottom="@dimen/spacing_s"
+    android:background="@drawable/card_background"
+    android:orientation="horizontal"
+    android:gravity="center_vertical"
+    android:padding="@dimen/spacing_m">
+
+    <LinearLayout
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/member_name"
+            style="@style/Text.Body"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textStyle="bold"
+            android:maxLines="1"
+            android:ellipsize="end" />
+
+        <TextView
+            android:id="@+id/member_role"
+            style="@style/Text.Caption"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="2dp" />
+    </LinearLayout>
+
+    <Button
+        android:id="@+id/member_make_admin"
+        style="@style/Button.Text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:minHeight="40dp"
+        android:textSize="14sp"
+        android:textColor="@color/colorPrimary"
+        android:text="@string/groups_make_admin"
+        android:visibility="gone" />
+
+    <Button
+        android:id="@+id/member_remove"
+        style="@style/Button.Text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/spacing_xs"
+        android:minHeight="40dp"
+        android:textSize="14sp"
+        android:textColor="@color/danger"
+        android:text="@string/groups_remove_member"
+        android:visibility="gone" />
+</LinearLayout>

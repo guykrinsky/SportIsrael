@@ -24,6 +24,15 @@
     <color name="info">#1a73e8</color>
     <color name="info_pressed">#1557b0</color>
 
+    <!-- Sport identity colors (group covers, chips) -->
+    <color name="sport_basketball">#e8710a</color>
+    <color name="sport_soccer">#1e8e3e</color>
+    <color name="sport_tennis">#afb42b</color>
+    <color name="sport_volleyball">#1a73e8</color>
+    <color name="sport_running">#9334e6</color>
+    <color name="sport_cycling">#00838f</color>
+    <color name="sport_other">#5f6368</color>
+
     <!-- Legacy names still referenced by layouts/drawables (kept to avoid breakage) -->
     <color name="profile_blue">#0095e6</color>
     <color name="profile_line">#a45200</color>

@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="@color/background"
+    tools:context=".InviteMembersActivity">
+
+    <!-- In-layout header -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center_vertical"
+        android:background="@color/surface"
+        android:paddingLeft="@dimen/spacing_xs"
+        android:paddingRight="@dimen/spacing_m">
+
+        <ImageButton
+            android:id="@+id/invite_back"
+            android:layout_width="@dimen/touch_target_min"
+            android:layout_height="@dimen/touch_target_min"
+            android:background="@android:color/transparent"
+            android:contentDescription="Back"
+            app:srcCompat="@drawable/ic_back" />
+
+        <TextView
+            style="@style/Text.Body"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:textStyle="bold"
+            android:text="@string/groups_invite_members" />
+    </LinearLayout>
+
+    <EditText
+        android:id="@+id/invite_search"
+        style="@style/FormField"
+        android:layout_marginLeft="@dimen/spacing_m"
+        android:layout_marginRight="@dimen/spacing_m"
+        android:layout_marginTop="@dimen/spacing_m"
+        android:hint="@string/groups_invite_search_hint"
+        android:inputType="text"
+        android:imeOptions="actionSearch"
+        android:maxLines="1" />
+
+    <ProgressBar
+        android:id="@+id/invite_progress"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="@dimen/spacing_l"
+        android:visibility="gone" />
+
+    <TextView
+        android:id="@+id/invite_empty_text"
+        style="@style/Text.Subtitle"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/spacing_l"
+        android:gravity="center"
+        android:text="@string/groups_no_people_found"
+        android:visibility="gone" />
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/invite_results"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:layout_marginTop="@dimen/spacing_m"
+        android:clipToPadding="false"
+        android:paddingBottom="@dimen/spacing_m" />
+</LinearLayout>

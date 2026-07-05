@@ -1,0 +1,9 @@
+{
+  "name": "sportisrael-scripts",
+  "version": "1.0.0",
+  "private": true,
+  "description": "One-off maintenance scripts for SportIsrael (not part of the app build)",
+  "dependencies": {
+    "firebase-admin": "^12.0.0"
+  }
+}

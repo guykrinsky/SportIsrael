@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginLeft="@dimen/spacing_m"
+    android:layout_marginRight="@dimen/spacing_m"
+    android:layout_marginBottom="@dimen/spacing_m"
+    android:background="@drawable/card_background"
+    android:orientation="vertical">
+
+    <!-- Sport-branded cover strip -->
+    <FrameLayout
+        android:id="@+id/group_cover"
+        android:layout_width="match_parent"
+        android:layout_height="64dp"
+        android:background="@color/sport_other">
+
+        <TextView
+            android:id="@+id/group_cover_sport"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="start|center_vertical"
+            android:layout_marginLeft="@dimen/spacing_m"
+            android:textColor="@color/white"
+            android:textSize="16sp"
+            android:textStyle="bold" />
+
+        <ImageView
+            android:id="@+id/group_private_badge"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:layout_gravity="end|center_vertical"
+            android:layout_marginRight="@dimen/spacing_m"
+            android:contentDescription="Private group"
+            app:srcCompat="@drawable/ic_lock"
+            android:visibility="gone" />
+    </FrameLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center_vertical"
+        android:padding="@dimen/spacing_m">
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/group_name"
+                style="@style/Text.Body"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textSize="18sp"
+                android:textStyle="bold"
+                android:maxLines="1"
+                android:ellipsize="end" />
+
+            <TextView
+                android:id="@+id/group_meta"
+                style="@style/Text.Caption"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="2dp"
+                android:maxLines="1"
+                android:ellipsize="end" />
+        </LinearLayout>
+
+        <Button
+            android:id="@+id/group_action_button"
+            style="@style/Button.Primary"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/spacing_s"
+            android:minHeight="40dp"
+            android:minWidth="88dp"
+            android:paddingLeft="@dimen/spacing_m"
+            android:paddingRight="@dimen/spacing_m"
+            android:textSize="14sp"
+            android:text="@string/groups_join" />
+    </LinearLayout>
+</LinearLayout>

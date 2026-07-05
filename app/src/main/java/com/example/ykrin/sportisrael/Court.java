@@ -2,13 +2,17 @@ package com.example.ykrin.sportisrael;
 
 import com.google.android.gms.maps.model.LatLng;
 import com.google.firebase.firestore.GeoPoint;
+import com.google.firebase.firestore.IgnoreExtraProperties;
 
-
+@IgnoreExtraProperties
 public class Court {
     private String title;
     private String description;
     private GeoPoint location;
     private String state;
+    private String sport;
+    private String source;
+    private long osmId;
 
     public Court(String title, String description, GeoPoint location, String state) {
         this.title = title;
@@ -65,5 +69,29 @@ public class Court {
 
     public void setState(String state) {
         this.state = state;
+    }
+
+    public String getSport() {
+        return sport;
+    }
+
+    public void setSport(String sport) {
+        this.sport = sport;
+    }
+
+    public String getSource() {
+        return source;
+    }
+
+    public void setSource(String source) {
+        this.source = source;
+    }
+
+    public long getOsmId() {
+        return osmId;
+    }
+
+    public void setOsmId(long osmId) {
+        this.osmId = osmId;
     }
 }

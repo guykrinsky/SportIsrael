@@ -89,9 +89,10 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
                     if (user != null)
                     {
                         Log.d("sportIsrael", "User name in register: " + user_name);
+                        UserDirectory.writeUserDocument(user.getUid(), user_name, user.getEmail());
                         UserProfileChangeRequest profileUpdates = new UserProfileChangeRequest.Builder()
                                 .setDisplayName(user_name).build();
-                        
+
                         user.updateProfile(profileUpdates).addOnCompleteListener(new OnCompleteListener<Void>() {
                             @Override
                             public void onComplete(@NonNull Task<Void> task) {

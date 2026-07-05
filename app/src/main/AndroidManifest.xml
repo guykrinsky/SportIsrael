@@ -38,6 +38,10 @@
             android:label="@string/map_page_title" />
         <activity android:name=".RegisterActivity" />
         <activity android:name=".CourtInformationActivity" />
+        <activity android:name=".GroupDetailActivity" />
+        <activity android:name=".CreateGroupActivity" />
+        <activity android:name=".GroupMembersActivity" />
+        <activity android:name=".InviteMembersActivity" />
     </application>
 
 </manifest>
