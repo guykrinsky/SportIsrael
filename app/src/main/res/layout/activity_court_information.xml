@@ -1,101 +1,268 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".CourtInformationActivity"
-    android:orientation="vertical"
-    android:gravity="center_horizontal"
     android:background="@color/background"
-    android:padding="@dimen/spacing_m">
-
-    <TextView
-        style="@style/Text.Title"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:paddingTop="@dimen/spacing_s"
-        android:paddingBottom="@dimen/spacing_s"
-        android:text="Court Information" />
-
-    <ImageView
-        android:id="@+id/info_court_image"
-        android:layout_width="match_parent"
-        android:layout_height="180dp"
-        android:layout_marginTop="@dimen/spacing_m"
-        android:scaleType="centerCrop"
-        android:contentDescription="Photo of the court"
-        android:src="@drawable/basketball_court" />
-
-    <TextView
-        android:id="@+id/info_court_name"
-        style="@style/Text.Subtitle"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/spacing_m"
-        android:textStyle="bold"
-        android:textColor="@color/on_surface" />
-
-    <TextView
-        android:id="@+id/info_court_description"
-        style="@style/Text.Body"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/spacing_xs"
-        android:gravity="center"
-        android:textColor="@color/on_surface_secondary" />
-
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1" />
-
-    <TextView
-        style="@style/Text.Caption"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="@dimen/spacing_s"
-        android:text="Update court status" />
+    android:fillViewport="true"
+    tools:context=".CourtInformationActivity">
 
     <LinearLayout
-        android:id="@+id/three_buttons"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:gravity="center_horizontal">
+        android:orientation="vertical"
+        android:paddingBottom="@dimen/spacing_l">
 
-        <Button
-            android:id="@+id/court_is_full"
-            style="@style/Button.Destructive"
-            android:layout_width="0dp"
+        <!-- Toolbar-style header -->
+        <LinearLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="Full" />
+            android:orientation="horizontal"
+            android:gravity="center_vertical"
+            android:padding="@dimen/spacing_m">
 
-        <Button
-            android:id="@+id/court_is_searching_for_players"
-            style="@style/Button.Info"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:layout_marginLeft="@dimen/spacing_s"
-            android:text="More players" />
+            <ImageButton
+                android:id="@+id/court_info_back"
+                android:layout_width="@dimen/touch_target_min"
+                android:layout_height="@dimen/touch_target_min"
+                android:background="@android:color/transparent"
+                android:contentDescription="Back"
+                android:src="@drawable/ic_back" />
 
-        <Button
-            android:id="@+id/court_is_empty"
-            style="@style/Button.Success"
-            android:layout_width="0dp"
+            <TextView
+                style="@style/Text.Title"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:text="Court Details" />
+
+            <!-- Spacer for visual symmetry with back button -->
+            <View
+                android:layout_width="@dimen/touch_target_min"
+                android:layout_height="@dimen/touch_target_min" />
+        </LinearLayout>
+
+        <!-- Identity card: name, sport badge, live status -->
+        <LinearLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:layout_marginLeft="@dimen/spacing_s"
-            android:text="Empty" />
+            android:layout_marginLeft="@dimen/spacing_m"
+            android:layout_marginRight="@dimen/spacing_m"
+            android:orientation="vertical"
+            android:background="@drawable/card_background"
+            android:padding="@dimen/spacing_m">
+
+            <TextView
+                android:id="@+id/info_court_name"
+                style="@style/Text.Title"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                tools:text="Doron Basketball Court" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/spacing_s"
+                android:orientation="horizontal"
+                android:gravity="center_vertical">
+
+                <TextView
+                    android:id="@+id/court_sport_badge"
+                    style="@style/Text.Caption"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/badge_background"
+                    android:paddingLeft="@dimen/spacing_s"
+                    android:paddingRight="@dimen/spacing_s"
+                    android:paddingTop="@dimen/spacing_xs"
+                    android:paddingBottom="@dimen/spacing_xs"
+                    android:textColor="@color/white"
+                    android:textStyle="bold"
+                    tools:text="Basketball" />
+
+                <View
+                    android:id="@+id/court_status_dot"
+                    android:layout_width="12dp"
+                    android:layout_height="12dp"
+                    android:layout_marginLeft="@dimen/spacing_m"
+                    android:background="@drawable/status_dot" />
+
+                <TextView
+                    android:id="@+id/court_status_label"
+                    style="@style/Text.Caption"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/spacing_xs"
+                    tools:text="Available" />
+            </LinearLayout>
+        </LinearLayout>
+
+        <!-- Details card -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/spacing_m"
+            android:layout_marginRight="@dimen/spacing_m"
+            android:layout_marginTop="@dimen/spacing_m"
+            android:orientation="vertical"
+            android:background="@drawable/card_background"
+            android:padding="@dimen/spacing_m">
+
+            <TextView
+                style="@style/Text.Subtitle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textStyle="bold"
+                android:textColor="@color/on_surface"
+                android:text="About this court" />
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_marginTop="@dimen/spacing_s"
+                android:layout_marginBottom="@dimen/spacing_s"
+                android:background="@color/divider" />
+
+            <TextView
+                android:id="@+id/info_court_description"
+                style="@style/Text.Body"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                tools:text="Outdoor basketball court with two hoops." />
+
+            <!-- Structured detail rows (populated for OSM courts) -->
+            <LinearLayout
+                android:id="@+id/detail_surface_row"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/spacing_m"
+                android:orientation="horizontal"
+                android:visibility="gone">
+
+                <TextView
+                    style="@style/Text.Caption"
+                    android:layout_width="100dp"
+                    android:layout_height="wrap_content"
+                    android:text="Surface" />
+
+                <TextView
+                    android:id="@+id/detail_surface_value"
+                    style="@style/Text.Body"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    tools:text="Asphalt" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/detail_lighting_row"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/spacing_s"
+                android:orientation="horizontal"
+                android:visibility="gone">
+
+                <TextView
+                    style="@style/Text.Caption"
+                    android:layout_width="100dp"
+                    android:layout_height="wrap_content"
+                    android:text="Lighting" />
+
+                <TextView
+                    android:id="@+id/detail_lighting_value"
+                    style="@style/Text.Body"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    tools:text="Lit at night" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/detail_access_row"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/spacing_s"
+                android:orientation="horizontal"
+                android:visibility="gone">
+
+                <TextView
+                    style="@style/Text.Caption"
+                    android:layout_width="100dp"
+                    android:layout_height="wrap_content"
+                    android:text="Access" />
+
+                <TextView
+                    android:id="@+id/detail_access_value"
+                    style="@style/Text.Body"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    tools:text="Public" />
+            </LinearLayout>
+        </LinearLayout>
+
+        <!-- Status update card -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/spacing_m"
+            android:layout_marginRight="@dimen/spacing_m"
+            android:layout_marginTop="@dimen/spacing_m"
+            android:orientation="vertical"
+            android:background="@drawable/card_background"
+            android:padding="@dimen/spacing_m">
+
+            <TextView
+                style="@style/Text.Subtitle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textStyle="bold"
+                android:textColor="@color/on_surface"
+                android:text="Update status" />
+
+            <TextView
+                style="@style/Text.Caption"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/spacing_xs"
+                android:text="Let other players know how busy it is right now" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/spacing_m"
+                android:orientation="horizontal">
+
+                <Button
+                    android:id="@+id/court_is_empty"
+                    style="@style/Button.Success"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:paddingLeft="0dp"
+                    android:paddingRight="0dp"
+                    android:text="Empty" />
+
+                <Button
+                    android:id="@+id/court_is_searching_for_players"
+                    style="@style/Button.Info"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:layout_marginLeft="@dimen/spacing_s"
+                    android:paddingLeft="0dp"
+                    android:paddingRight="0dp"
+                    android:text="Need players" />
+
+                <Button
+                    android:id="@+id/court_is_full"
+                    style="@style/Button.Destructive"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:layout_marginLeft="@dimen/spacing_s"
+                    android:paddingLeft="0dp"
+                    android:paddingRight="0dp"
+                    android:text="Full" />
+            </LinearLayout>
+        </LinearLayout>
     </LinearLayout>
-
-    <Button
-        android:id="@+id/back_to_map_button"
-        style="@style/Button.Secondary"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/spacing_m"
-        android:text="Back to the map" />
-</LinearLayout>
+</ScrollView>

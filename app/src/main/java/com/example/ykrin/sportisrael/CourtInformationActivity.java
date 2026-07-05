@@ -1,121 +1,192 @@
 package com.example.ykrin.sportisrael;
 
-import android.content.Intent;
+import android.graphics.drawable.GradientDrawable;
 import android.support.annotation.NonNull;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
-import android.widget.ImageView;
+import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.google.android.gms.maps.model.BitmapDescriptorFactory;
-import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.firestore.GeoPoint;
-import com.google.firebase.firestore.QueryDocumentSnapshot;
-import com.google.firebase.firestore.QuerySnapshot;
 
 public class CourtInformationActivity extends AppCompatActivity implements View.OnClickListener {
     private static final String TAG = "sportIsrael";
-    ImageView info_court_image;
+
+    ImageButton back_button;
     TextView info_title;
     TextView court_description;
+    TextView sport_badge;
+    View status_dot;
+    TextView status_label;
+    LinearLayout detail_surface_row;
+    TextView detail_surface_value;
+    LinearLayout detail_lighting_row;
+    TextView detail_lighting_value;
+    LinearLayout detail_access_row;
+    TextView detail_access_value;
     Button info_full_button;
     Button info_empty_button;
     Button info_players_button;
-    Button back_to_the_map;
+
     Court court;
     FirebaseFirestore mDB;
-    String court_title;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_court_information);
-        info_court_image = findViewById(R.id.image);
+
+        back_button = findViewById(R.id.court_info_back);
         info_title = findViewById(R.id.info_court_name);
         court_description = findViewById(R.id.info_court_description);
+        sport_badge = findViewById(R.id.court_sport_badge);
+        status_dot = findViewById(R.id.court_status_dot);
+        status_label = findViewById(R.id.court_status_label);
+        detail_surface_row = findViewById(R.id.detail_surface_row);
+        detail_surface_value = findViewById(R.id.detail_surface_value);
+        detail_lighting_row = findViewById(R.id.detail_lighting_row);
+        detail_lighting_value = findViewById(R.id.detail_lighting_value);
+        detail_access_row = findViewById(R.id.detail_access_row);
+        detail_access_value = findViewById(R.id.detail_access_value);
         info_empty_button = findViewById(R.id.court_is_empty);
         info_full_button = findViewById(R.id.court_is_full);
         info_players_button = findViewById(R.id.court_is_searching_for_players);
-        back_to_the_map = findViewById(R.id.back_to_map_button);
 
         mDB = FirebaseFirestore.getInstance();
 
-        // Extract marker name (== court name), from intent.
         Bundle extras = getIntent().getExtras();
-        final String court_title = extras.getString("court_title");
-        //TODO: Add better handling to when court_title is null.
-        if (court_title == null)
-            Log.e(TAG, "CourtInformationActivity didn't received court_title");
+        final String court_title = extras == null ? null : extras.getString("court_title");
+        if (court_title == null) {
+            Log.e(TAG, "CourtInformationActivity didn't receive court_title");
+            finish();
+            return;
+        }
 
         DocumentReference selected_document = mDB.collection("courts").document(court_title);
         selected_document.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
             @Override
             public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-                if (task.isSuccessful()) {
+                if (task.isSuccessful() && task.getResult().exists()) {
                     court = task.getResult().toObject(Court.class);
-                    Log.d(TAG, "show information of court:" + court.toString());
                     show_court_information(court);
-                }
-                else {
+                } else {
                     Log.e(TAG, "There isn't a court with clicked marker title: " + court_title);
-                    // TODO: check how to add toast in innner class.
-                    // Toast.makeText(this, "Selected court has no information", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(CourtInformationActivity.this,
+                            "Selected court has no information", Toast.LENGTH_SHORT).show();
+                    finish();
                 }
             }
         });
 
+        back_button.setOnClickListener(this);
         info_empty_button.setOnClickListener(this);
         info_full_button.setOnClickListener(this);
         info_players_button.setOnClickListener(this);
-        back_to_the_map.setOnClickListener(this);
     }
 
-    public void show_court_information(Court court)
-    {
+    public void show_court_information(Court court) {
         info_title.setText(court.getTitle());
         court_description.setText(court.getDescription());
+
+        // Sport badge tinted with the sport's identity color.
+        SportType sport = SportType.fromValue(court.getSport());
+        sport_badge.setText(sport.getDisplayName());
+        GradientDrawable badge = (GradientDrawable) sport_badge.getBackground().mutate();
+        badge.setColor(ContextCompat.getColor(this, sport.getColorRes()));
+
+        updateStatusUI(CourtState.fromValue(court.getState()));
+        showParsedDetails(court.getDescription());
     }
 
+    /**
+     * OSM-imported courts store details in the description as
+     * "key: value" pairs separated by " · ". Surface structured
+     * rows for the ones worth calling out.
+     */
+    private void showParsedDetails(String description) {
+        if (description == null) {
+            return;
+        }
+        for (String part : description.split("·")) {
+            String piece = part.trim();
+            String lower = piece.toLowerCase();
+            if (lower.startsWith("surface:")) {
+                detail_surface_value.setText(capitalize(piece.substring("surface:".length()).trim()));
+                detail_surface_row.setVisibility(View.VISIBLE);
+            } else if (lower.contains("lit at night")) {
+                detail_lighting_value.setText("Lit at night");
+                detail_lighting_row.setVisibility(View.VISIBLE);
+            } else if (lower.startsWith("access:")) {
+                detail_access_value.setText(capitalize(piece.substring("access:".length()).trim()));
+                detail_access_row.setVisibility(View.VISIBLE);
+            }
+        }
+    }
+
+    private static String capitalize(String text) {
+        if (text.isEmpty()) {
+            return text;
+        }
+        return Character.toUpperCase(text.charAt(0)) + text.substring(1);
+    }
+
+    private void updateStatusUI(CourtState state) {
+        int color;
+        String label;
+        switch (state) {
+            case EMPTY:
+                color = R.color.success;
+                label = "Available";
+                break;
+            case FULL:
+                color = R.color.danger;
+                label = "Full";
+                break;
+            case SEARCHING:
+                color = R.color.info;
+                label = "Looking for players";
+                break;
+            default:
+                color = R.color.gray;
+                label = "Status unknown";
+                break;
+        }
+        GradientDrawable dot = (GradientDrawable) status_dot.getBackground().mutate();
+        dot.setColor(ContextCompat.getColor(this, color));
+        status_label.setText(label);
+    }
 
     @Override
     public void onClick(View button) {
+        if (button == back_button) {
+            finish();
+            return;
+        }
+
         CourtState new_state = null;
-        if (button == info_empty_button)
-        {
+        if (button == info_empty_button) {
             new_state = CourtState.EMPTY;
-        }
-        else if (button == info_full_button)
-        {
+        } else if (button == info_full_button) {
             new_state = CourtState.FULL;
-        }
-        else if (button == info_players_button)
-        {
+        } else if (button == info_players_button) {
             new_state = CourtState.SEARCHING;
         }
-        else if (button == back_to_the_map)
-        {
-            Intent back_to_map_activity = new Intent(this, MapActivity.class);
-            startActivity(back_to_map_activity);
-        }
-        if (new_state != null)
-        {
+
+        if (new_state != null && court != null) {
             court.setState(new_state.getValue());
             mDB.collection("courts").document(court.getTitle()).update("state", court.getState());
+            updateStatusUI(new_state);
             Toast.makeText(this, getString(R.string.court_state_changed, new_state.getValue()), Toast.LENGTH_SHORT).show();
         }
     }
-
-
 }
