@@ -32,6 +32,8 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -154,7 +156,9 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
     @Override
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
-        Log.d(TAG, "onMapReady - loading courts");
+        FirebaseUser currentUser = FirebaseAuth.getInstance().getCurrentUser();
+        Log.d(TAG, "onMapReady - mMap assigned, user=" + (currentUser != null ? currentUser.getEmail() : "NOT LOGGED IN"));
+        Log.d(TAG, "onMapReady - Firestore instance: " + mDB.toString());
         loadCourts();
 
         mMap.setOnMarkerClickListener(this);
@@ -171,17 +175,24 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
     }
 
     private void loadCourts() {
+        Log.d(TAG, "loadCourts() - starting Firestore query on 'courts' collection");
         mDB.collection("courts")
                 .get()
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                     @Override
                     public void onComplete(@NonNull Task<QuerySnapshot> task) {
                         if (task.isSuccessful()) {
+                            int total = task.getResult().size();
+                            Log.d(TAG, "loadCourts() - query returned " + total + " documents");
                             int count = 0;
+                            int skipped = 0;
                             for (QueryDocumentSnapshot document : task.getResult()) {
                                 try {
                                     Court court = document.toObject(Court.class);
                                     if (court.getTitle() == null || court.getLocation() == null) {
+                                        Log.w(TAG, "loadCourts() - SKIPPING doc '" + document.getId()
+                                                + "' (title=" + court.getTitle() + ", location=" + court.getLocation() + ")");
+                                        skipped++;
                                         continue;
                                     }
                                     BitmapDescriptor marker_color;
@@ -209,12 +220,14 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
                                             .icon(marker_color));
                                     count++;
                                 } catch (Exception e) {
-                                    Log.e(TAG, "Failed to parse court doc: " + document.getId(), e);
+                                    Log.e(TAG, "loadCourts() - EXCEPTION parsing doc '" + document.getId() + "'", e);
                                 }
                             }
-                            Log.d(TAG, "Loaded " + count + " courts onto map");
+                            Log.d(TAG, "loadCourts() - DONE: " + count + " markers added, " + skipped + " skipped, " + total + " total docs");
                         } else {
-                            Log.e(TAG, "Error loading courts", task.getException());
+                            Log.e(TAG, "loadCourts() - QUERY FAILED", task.getException());
+                            FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+                            Log.e(TAG, "loadCourts() - auth state at failure: user=" + (user != null ? user.getEmail() + " uid=" + user.getUid() : "NULL (not logged in)"));
                         }
                     }
                 });
