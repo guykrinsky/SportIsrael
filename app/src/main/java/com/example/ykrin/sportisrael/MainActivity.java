@@ -22,8 +22,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         m_register_button.setOnClickListener(this);
 
         menu_bar_view = (BottomNavigationView)findViewById(R.id.navigation_bar);
-        NavigationBar navigation_bar = new NavigationBar(this);
-        menu_bar_view.setOnNavigationItemSelectedListener(navigation_bar);
+        NavigationBar.attach(this, menu_bar_view);
     }
 
     @Override

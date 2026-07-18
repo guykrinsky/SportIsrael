@@ -14,6 +14,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
@@ -183,10 +185,53 @@ public class CourtInformationActivity extends AppCompatActivity implements View.
         }
 
         if (new_state != null && court != null) {
-            court.setState(new_state.getValue());
-            mDB.collection("courts").document(court.getTitle()).update("state", court.getState());
-            updateStatusUI(new_state);
-            Toast.makeText(this, getString(R.string.court_state_changed, new_state.getValue()), Toast.LENGTH_SHORT).show();
+            persistState(new_state);
         }
+    }
+
+    /**
+     * Writes the new state to Firestore (the single source of truth).
+     * The UI updates optimistically but reverts if the write fails, so
+     * it never permanently shows a state that wasn't persisted.
+     */
+    private void persistState(final CourtState new_state) {
+        final CourtState previous_state = CourtState.fromValue(court.getState());
+        if (new_state == previous_state) {
+            return;
+        }
+
+        court.setState(new_state.getValue());
+        updateStatusUI(new_state);
+        setStatusButtonsEnabled(false);
+
+        mDB.collection("courts").document(court.getTitle())
+                .update("state", new_state.getValue())
+                .addOnSuccessListener(new OnSuccessListener<Void>() {
+                    @Override
+                    public void onSuccess(Void aVoid) {
+                        setStatusButtonsEnabled(true);
+                        Toast.makeText(CourtInformationActivity.this,
+                                getString(R.string.court_state_changed, new_state.getValue()),
+                                Toast.LENGTH_SHORT).show();
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        Log.e(TAG, "Failed to persist court state", e);
+                        court.setState(previous_state.getValue());
+                        updateStatusUI(previous_state);
+                        setStatusButtonsEnabled(true);
+                        Toast.makeText(CourtInformationActivity.this,
+                                "Couldn't update status - check your connection",
+                                Toast.LENGTH_LONG).show();
+                    }
+                });
+    }
+
+    private void setStatusButtonsEnabled(boolean enabled) {
+        info_empty_button.setEnabled(enabled);
+        info_full_button.setEnabled(enabled);
+        info_players_button.setEnabled(enabled);
     }
 }

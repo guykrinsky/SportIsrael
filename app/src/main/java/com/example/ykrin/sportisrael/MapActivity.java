@@ -89,9 +89,7 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
         save_new_court = findViewById(R.id.save_new_court);
 
         menu_bar_view = (BottomNavigationView)findViewById(R.id.navigation_bar);
-        NavigationBar navigation_bar = new NavigationBar(this);
-        // Set actions for pressing menu bar options.
-        menu_bar_view.setOnNavigationItemSelectedListener(navigation_bar);
+        NavigationBar.attach(this, menu_bar_view);
 
         // Access a Cloud Firestore instance from your Activity
         mDB = FirebaseFirestore.getInstance();
